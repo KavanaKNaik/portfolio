@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio</title>
+
+<!--
+  ============================================================
+  HOW TO EDIT THIS SITE
+  ============================================================
+  Everything you need to change lives in the CONFIG block near
+  the bottom of this file (search for "const CONFIG").
+
+  1. NAME / PHOTO / STUDY / INTERESTS  -> CONFIG.profile
+  2. CERTIFICATES  -> CONFIG.certificates  (drop your images in
+     an /images folder next to this file and point to them)
+  3. LEETCODE  -> CONFIG.leetcodeUsername  (put your real
+     username here and the dashboard + badges update themselves)
+  4. PROJECTS  -> hidden for now. To turn it on, find
+     id="projects" below and delete the  hidden  attribute.
+
+  Anything you haven't given me yet shows a clearly marked
+  placeholder, so nothing looks broken while you fill it in.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --paper:#EFF1F0;
+  --paper-2:#F8F9F8;
+  --ink:#17201C;
+  --ink-soft:#4B574F;
+  --rule:#CFD9D2;
+  --rule-strong:#AEBDB4;
+  --accent:#C2365C;
+  --pine:#2F6F5E;
+  --amber:#D99A22;
+
+  --grid: 26px;
+  --maxw: 1080px;
+
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  margin:0;
+  font-family:var(--sans);
+  color:var(--ink);
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(47,111,94,.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(47,111,94,.09) 1px, transparent 1px);
+  background-size:var(--grid) var(--grid);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+section{padding:104px 0}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.05;margin:0}
+p{margin:0 0 1em;max-width:62ch}
+a{color:inherit}
+
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky;top:0;z-index:60;
+  backdrop-filter:blur(8px);
+  background:rgba(239,241,240,.82);
+  border-bottom:1px solid var(--rule);
+}
+nav .wrap{display:flex;align-items:baseline;gap:28px;height:58px}
+.brand{font-family:var(--serif);font-size:19px;letter-spacing:-.01em;text-decoration:none;margin-right:auto}
+nav a.link{
+  font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);
+  text-decoration:none;padding-bottom:2px;border-bottom:1.5px solid transparent;
+}
+nav a.link:hover,nav a.link[aria-current="true"]{color:var(--ink);border-color:var(--accent)}
+@media(max-width:640px){nav a.link:nth-child(n+4){display:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:88px 0 96px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1fr 250px;gap:56px;align-items:start}
+@media(max-width:820px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+
+.hero h1{
+  font-size:clamp(3rem,9.5vw,6.4rem);
+  font-variation-settings:"opsz" 120;
+  letter-spacing:-.035em;
+  margin:0 0 4px;
+}
+.hero .role{
+  font-family:var(--mono);font-size:14px;color:var(--pine);
+  border-left:2px solid var(--accent);padding-left:12px;margin:26px 0 22px;
+}
+.hero p.lede{font-size:18.5px;color:var(--ink-soft)}
+
+.photo-pin{transform:rotate(-2.4deg);}
+.photo-frame{
+  background:var(--paper-2);
+  padding:13px 13px 46px;
+  border:1px solid var(--rule-strong);
+  box-shadow:6px 8px 0 rgba(23,32,28,.07);
+  position:relative;
+}
+.photo-frame::after{
+  content:attr(data-caption);
+  position:absolute;left:0;right:0;bottom:15px;text-align:center;
+  font-family:var(--mono);font-size:11px;color:var(--ink-soft);
+}
+.photo-frame img,.photo-empty{
+  display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#E2E7E3;
+}
+.photo-empty{
+  display:grid;place-content:center;text-align:center;gap:6px;
+  border:1.5px dashed var(--rule-strong);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);padding:14px;
+}
+
+/* ---------- section headings ---------- */
+.head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+.head h2{font-size:clamp(1.9rem,4.2vw,2.75rem);letter-spacing:-.025em}
+.head .count{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+.head::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px}
+@media(max-width:820px){.about-grid{grid-template-columns:1fr;gap:34px}}
+
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{position:relative;padding:0 0 26px 26px;border-left:1px solid var(--rule-strong)}
+.timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+.timeline li::before{
+  content:"";position:absolute;left:-5.5px;top:7px;width:10px;height:10px;
+  border-radius:50%;background:var(--paper);border:2px solid var(--accent);
+}
+.timeline .yr{font-family:var(--mono);font-size:12px;color:var(--pine)}
+.timeline .ttl{font-family:var(--serif);font-size:20px;display:block;margin:2px 0 3px}
+.timeline .sub{font-size:14.5px;color:var(--ink-soft)}
+
+.tags{display:flex;flex-wrap:wrap;gap:9px;padding:0;margin:0;list-style:none}
+.tags li{
+  font-family:var(--mono);font-size:13px;padding:6px 13px;
+  background:var(--paper-2);border:1px solid var(--rule-strong);border-radius:999px;
+}
+.tags li:nth-child(3n+1){border-color:var(--pine);color:var(--pine)}
+.tags li:nth-child(3n+2){border-color:var(--accent);color:var(--accent)}
+
+/* ---------- certificates: scroll-driven reel ---------- */
+.reel-outer{position:relative}
+.reel-sticky{
+  position:sticky;top:58px;height:calc(100vh - 58px);
+  display:flex;align-items:center;overflow:hidden;
+}
+.reel-track{
+  display:flex;gap:30px;padding:0 max(28px,calc((100vw - var(--maxw))/2));
+  will-change:transform;
+}
+.cert{
+  flex:0 0 min(76vw,380px);
+  background:var(--paper-2);
+  border:1px solid var(--rule-strong);
+  box-shadow:5px 6px 0 rgba(23,32,28,.06);
+}
+.cert figure{margin:0}
+.cert img,.cert .ph{
+  display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#E2E7E3;
+  border-bottom:1px solid var(--rule);
+}
+.cert .ph{
+  display:grid;place-content:center;text-align:center;
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding:18px;gap:6px;
+}
+.cert figcaption{padding:16px 18px 18px}
+.cert .c-name{font-family:var(--serif);font-size:19px;line-height:1.2;display:block}
+.cert .c-meta{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-top:6px;display:block}
+.reel-progress{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--rule)}
+.reel-progress span{display:block;height:100%;width:0;background:var(--accent)}
+.reel-hint{
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+  margin-top:14px;display:flex;align-items:center;gap:8px;
+}
+
+.reel-outer.static .reel-sticky{position:static;height:auto;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px}
+.reel-outer.static .reel-track{transform:none!important}
+.reel-outer.static .cert{scroll-snap-align:center}
+
+/* ---------- leetcode ---------- */
+.lc{
+  border:1px solid var(--rule-strong);background:var(--paper-2);
+  box-shadow:6px 7px 0 rgba(23,32,28,.06);
+}
+.lc-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 18px;border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--pine);
+  box-shadow:0 0 0 0 rgba(47,111,94,.5);animation:pulse 2.4s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(47,111,94,0)}100%{box-shadow:0 0 0 0 rgba(47,111,94,0)}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+.lc-bar .right{margin-left:auto}
+
+.lc-body{display:grid;grid-template-columns:230px 1fr;gap:34px;padding:28px}
+@media(max-width:760px){.lc-body{grid-template-columns:1fr;gap:26px}}
+
+.ring{position:relative;width:186px;height:186px;margin:0 auto}
+.ring svg{transform:rotate(-90deg);width:100%;height:100%}
+.ring .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .num{font-family:var(--serif);font-size:44px;line-height:1}
+.ring .den{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-top:4px}
+
+.split{display:grid;gap:15px}
+.diff{display:grid;grid-template-columns:62px 1fr 78px;align-items:center;gap:12px}
+.diff .lbl{font-family:var(--mono);font-size:12.5px}
+.diff .rail{height:7px;background:#E1E6E2;border-radius:99px;overflow:hidden}
+.diff .fill{display:block;height:100%;width:0;border-radius:99px;transition:width .8s ease}
+.diff .val{font-family:var(--mono);font-size:12px;color:var(--ink-soft);text-align:right}
+.d-easy .fill{background:var(--pine)} .d-easy .lbl{color:var(--pine)}
+.d-med .fill{background:var(--amber)} .d-med .lbl{color:#A8760E}
+.d-hard .fill{background:var(--accent)} .d-hard .lbl{color:var(--accent)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stats div{background:var(--paper-2);padding:16px 18px}
+.stats .k{font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+.stats .v{font-family:var(--serif);font-size:25px;margin-top:3px}
+@media(max-width:560px){.stats{grid-template-columns:1fr 1fr}}
+
+/* ----- badges shelf ----- */
+.badges{padding:22px 28px 4px;border-bottom:1px solid var(--rule)}
+.badges-head{
+  display:flex;align-items:baseline;gap:10px;
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-bottom:16px;
+}
+.badges-head b{color:var(--ink);font-weight:600}
+.badges-head .active{margin-left:auto;color:var(--pine)}
+.badge-row{display:flex;flex-wrap:wrap;gap:14px}
+.badge{
+  width:112px;text-align:center;padding:14px 8px 12px;
+  border:1px solid var(--rule);background:var(--paper);
+  transition:transform .25s ease,border-color .25s ease;
+}
+.badge:hover{transform:translateY(-3px);border-color:var(--accent)}
+.badge.is-active{border-color:var(--amber);box-shadow:inset 0 0 0 1px rgba(217,154,34,.35)}
+.badge img{width:54px;height:54px;object-fit:contain;display:block;margin:0 auto 9px}
+.badge .b-ph{
+  width:54px;height:54px;margin:0 auto 9px;border-radius:50%;
+  border:1.5px dashed var(--rule-strong);display:grid;place-content:center;
+  font-family:var(--mono);font-size:16px;color:var(--rule-strong);
+}
+.badge .b-name{font-size:12px;line-height:1.3;display:block}
+.badge .b-date{font-family:var(--mono);font-size:10px;color:var(--ink-soft);margin-top:4px;display:block}
+.badges-empty{font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding-bottom:16px}
+
+.heat{display:flex;gap:3px;padding:20px 28px;overflow-x:auto}
+.heat .col{display:grid;grid-template-rows:repeat(7,1fr);gap:3px}
+.heat i{width:11px;height:11px;border-radius:2px;background:#E1E6E2;display:block}
+.heat i[data-l="1"]{background:#B9D3C7} .heat i[data-l="2"]{background:#79B09B}
+.heat i[data-l="3"]{background:#45876F} .heat i[data-l="4"]{background:var(--pine)}
+
+.recent{padding:6px 28px 26px}
+.recent h3{font-family:var(--mono);font-weight:500;font-size:11.5px;color:var(--ink-soft);margin:14px 0 10px}
+.recent ol{list-style:none;margin:0;padding:0}
+.recent li{
+  display:flex;gap:12px;align-items:baseline;padding:8px 0;
+  border-bottom:1px dotted var(--rule-strong);font-size:14.5px;
+}
+.recent li:last-child{border-bottom:0}
+.recent a{text-decoration:none;border-bottom:1px solid transparent}
+.recent a:hover{border-color:var(--accent)}
+.recent .when{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
+.recent .lang{font-family:var(--mono);font-size:11px;color:var(--pine)}
+
+.lc-msg{padding:26px 28px;font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+.lc-msg b{color:var(--ink);font-weight:600}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--rule-strong);padding:40px 0 60px;
+  font-family:var(--mono);font-size:12.5px;color:var(--ink-soft)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px}
+footer .right{margin-left:auto;display:flex;gap:18px}
+footer a{text-decoration:none;border-bottom:1px solid var(--rule-strong)}
+footer a:hover{border-color:var(--accent);color:var(--ink)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top" id="navBrand">Portfolio</a>
+    <a class="link" href="#about">background</a>
+    <a class="link" href="#interests">interests</a>
+    <a class="link" href="#certificates">certificates</a>
+    <a class="link" href="#leetcode">leetcode</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1 id="heroName">Your Name</h1>
+        <div class="role" id="heroRole">Add your role — e.g. CS undergrad, backend &amp; DSA</div>
+        <p class="lede" id="heroLede">
+          A one-or-two line introduction goes here. Say what you build, what you're
+          studying, and what you'd like someone reading this to do next.
+        </p>
+      </div>
+
+      <div class="photo-pin">
+        <div class="photo-frame" id="photoFrame" data-caption="photo — not added yet">
+          <div class="photo-empty" aria-label="Photo placeholder: no photo has been added yet">
+            <span>[ photo ]</span>
+            <span>drop a file at images/me.jpg<br>and set it in CONFIG</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== BACKGROUND + INTERESTS ===== -->
+  <section id="about">
+    <div class="wrap">
+      <div class="head"><h2>Study background</h2></div>
+      <div class="about-grid">
+        <ul class="timeline" id="timeline"></ul>
+        <div><p id="aboutNote" style="color:var(--ink-soft);font-size:15.5px"></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="interests" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Interested in</h2></div>
+      <ul class="tags" id="interestTags"></ul>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS (hidden until you're ready) =====
+       To show this section: delete the word  hidden  on the line below.
+  -->
+  <section id="projects" hidden>
+    <div class="wrap">
+      <div class="head"><h2>Projects</h2><span class="count" id="projCount"></span></div>
+      <div id="projectGrid"></div>
+    </div>
+  </section>
+
+  <!-- ===== CERTIFICATES ===== -->
+  <section id="certificates" style="padding-bottom:40px">
+    <div class="wrap">
+      <div class="head">
+        <h2>Certificates</h2>
+        <span class="count" id="certCount"></span>
+      </div>
+      <div class="reel-hint" id="reelHint">keep scrolling — the reel moves with the page</div>
+    </div>
+
+    <div class="reel-outer" id="reelOuter">
+      <div class="reel-sticky" id="reelSticky">
+        <div class="reel-track" id="reelTrack"></div>
+        <div class="reel-progress"><span id="reelBar"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LEETCODE ===== -->
+  <section id="leetcode">
+    <div class="wrap">
+      <div class="head"><h2>LeetCode, live</h2></div>
+
+      <div class="lc">
+        <div class="lc-bar">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="lcUser">@ManudeepHegde</span>
+          <span class="right" id="lcSync">syncing…</span>
+        </div>
+
+        <div id="lcContent">
+          <div class="lc-msg" id="lcLoading">Fetching your latest solve count…</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span id="footName">© Kavan K Naik</span>
+    <span class="right" id="footLinks"></span>
+  </div>
+</footer>
+
+<script>
+/* ==========================================================
+   CONFIG — this is the only part you need to edit
+   ========================================================== */
+const CONFIG = {
+  profile: {
+    name:    "Kavana K Naik",              // e.g. "Aarav Sharma"  — blank shows a placeholder
+    role:    "CS undergrad · backend & DSA",              // e.g. "CS undergrad · backend & DSA"
+    lede:    "I'm a Computer Science engineering student passionate about software development, problem-solving, and building practical projects. I enjoy working with Java, JavaScript, backend technologies, and DSA while continuously learning and improving my skills.",             
+    photo:   "personal/myimage.jpeg",              // e.g. "images/me.jpg" — blank shows a placeholder frame // e.g. "images/me.jpg" — blank shows a placeholder frame
+    photoCaption: "Computer Science student | Developer | Problem Solver",         // small caption under the photo
+    aboutNote: "I enjoy exploring how technology can turn simple ideas into useful solutions. From building web applications to solving DSA problems, I’m always experimenting, learning, and looking for better ways to build things. Outside of coding, I’m curious about new technologies and enjoy taking on challenges that push me to grow.",            // short paragraph beside the timeline
+    links: [                  // shown in the footer
+      { label:"GitHub",   url:"https://github.com/KavanaKNaik" },
+       { label:"LinkedIn", url:"www.linkedin.com/in/kavana-naik-288b99317" },
+       { label:"Email",    url:"mailto:kavanaknaik123@gmail.com" }
+    ]
+  },
+
+  // Study background — newest first
+  education: [
+    { year:"2022 — 2024", title:"Pre University", sub:"Siddharta pu college bhatkal· 96.33% · KCET-7142" },
+    { year:"2024 — 2028", title:"B.E. Computer Science", sub:"BMSCE Bangalore · CGPA 9.05" }
+  ],
+
+  // Interested in
+  interests: [
+    "Data structures & algorithms", "Backend engineering"
+  ],
+
+  // Certificates — add as many as you like, the reel sizes itself
+  certificates: [
+ { image:"Certi/udemywebdev.jpg", name:"Ultimate web development", issuer:"Udemy", date:"Sept 2026", url:"https://www.udemy.com/certificate/UC-77bc578b-950b-42f4-9725-1ab53587a8dc/" },
+ { image:"Certi/nutanix.jpg", name:"Nutanix Certified Associate", issuer:"Nutanix", date:"April 2026", url:"https://www.credly.com/earner/earned/badge/bdbd3b58-7e54-496d-a828-1a8bb1705bc4" },
+ { image:"Certi/IBMBob2.0hackathon.jpg", name:"IBM Bob 2.0 hackathon", issuer:"IBM", date:"Sept 2026", url:"https://lablab.ai/u/@Kavana/ai-hackathons/ibm-bob-2-hackathon/certificate" }
+  ],
+//https://coursera.org/share/9b0d90da0fc84678074b66aaa784e6e7
+  // Projects — stays hidden until you unhide the section in the HTML above
+  projects: [
+    // { name:"Project", blurb:"One line.", tech:["React","Node"], url:"" },
+  ],
+
+  leetcodeUsername: "Kavanabmsce",   // <-- your LeetCode username, e.g. "aarav_s"
+  showBadges: true,       // badges shelf on/off
+  cacheMinutes: 30        // how long to reuse a fetched result before re-fetching
+};
+
+/* ==========================================================
+   Below here you shouldn't need to change anything
+   ========================================================== */
+const $ = (s,r=document)=>r.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- profile ---------- */
+(function fillProfile(){
+  const p = CONFIG.profile;
+  if(p.name){
+    $("#heroName").textContent = p.name;
+    $("#navBrand").textContent = p.name.split(" ")[0];
+    $("#footName").textContent = "© " + p.name;
+    document.title = p.name + " — portfolio";
+  }
+  if(p.role) $("#heroRole").textContent = p.role;
+  if(p.lede) $("#heroLede").textContent = p.lede;
+
+  if(p.photo){
+    const f = $("#photoFrame");
+    f.dataset.caption = p.photoCaption || "";
+    f.innerHTML = `<img src="${esc(p.photo)}" alt="Portrait of ${esc(p.name||"the site owner")}">`;
+  }
+
+  $("#aboutNote").textContent = p.aboutNote ||
+    "Placeholder — add a short note here about how you study, what you're working through right now, or what you're looking for.";
+
+  const links = p.links||[];
+  $("#footLinks").innerHTML = links.length
+    ? links.map(l=>`<a href="${esc(l.url)}" rel="noopener">${esc(l.label)}</a>`).join("")
+    : `<span>links not added yet</span>`;
+})();
+
+/* ---------- education ---------- */
+(function fillEdu(){
+  const rows = CONFIG.education.length ? CONFIG.education : [{
+    year:"year — year", title:"Degree / school not added yet",
+    sub:"Add entries to CONFIG.education and they'll appear here."
+  }];
+  $("#timeline").innerHTML = rows.map(e=>`
+    <li>
+      <span class="yr">${esc(e.year)}</span>
+      <span class="ttl">${esc(e.title)}</span>
+      <span class="sub">${esc(e.sub||"")}</span>
+    </li>`).join("");
+})();
+
+/* ---------- interests ---------- */
+(function fillInterests(){
+  const t = CONFIG.interests.length ? CONFIG.interests
+    : ["interest not added yet","add them in CONFIG.interests"];
+  $("#interestTags").innerHTML = t.map(x=>`<li>${esc(x)}</li>`).join("");
+})();
+
+/* ---------- projects (hidden, but ready) ---------- */
+(function fillProjects(){
+  const g = $("#projectGrid"); if(!g) return;
+  $("#projCount").textContent = CONFIG.projects.length ? CONFIG.projects.length + " shipped" : "";
+  g.innerHTML = CONFIG.projects.length
+    ? CONFIG.projects.map(p=>`
+        <article style="border:1px solid var(--rule-strong);background:var(--paper-2);padding:20px;margin-bottom:14px">
+          <h3 style="font-size:21px">${esc(p.name)}</h3>
+          <p style="margin:8px 0 10px;color:var(--ink-soft)">${esc(p.blurb||"")}</p>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--pine)">${(p.tech||[]).map(esc).join(" · ")}</div>
+        </article>`).join("")
+    : `<p style="color:var(--ink-soft)">Nothing here yet — this section is hidden until you unhide it.</p>`;
+})();
+
+/* ---------- certificates reel ---------- */
+const CERTS = CONFIG.certificates.length ? CONFIG.certificates : [
+  {name:"Certificate 1", issuer:"not added yet", date:""},
+  {name:"Certificate 2", issuer:"not added yet", date:""},
+  {name:"Certificate 3", issuer:"not added yet", date:""},
+  {name:"Certificate 4", issuer:"not added yet", date:""}
+];
+$("#certCount").textContent = CONFIG.certificates.length ? CERTS.length + " total" : "placeholders";
+
+$("#reelTrack").innerHTML = CERTS.map((c,i)=>{
+  const media = c.image
+    ? `<img src="${esc(c.image)}" alt="${esc(c.name)} certificate${c.issuer?", issued by "+esc(c.issuer):""}" loading="lazy">`
+    : `<div class="ph" role="img" aria-label="Certificate image placeholder">
+         <span>[ image ${i+1} ]</span><span>images/cert-${i+1}.png</span>
+       </div>`;
+  const inner = `<figure>${media}<figcaption>
+      <span class="c-name">${esc(c.name)}</span>
+      <span class="c-meta">${[c.issuer,c.date].filter(Boolean).map(esc).join("  ·  ")||"details not added"}</span>
+    </figcaption></figure>`;
+  return c.url
+    ? `<article class="cert"><a href="${esc(c.url)}" rel="noopener" style="text-decoration:none;display:block">${inner}</a></article>`
+    : `<article class="cert">${inner}</article>`;
+}).join("");
+
+(function reel(){
+  const outer=$("#reelOuter"), sticky=$("#reelSticky"), track=$("#reelTrack"), bar=$("#reelBar");
+  const narrow = matchMedia("(max-width:700px)");
+  const calm   = matchMedia("(prefers-reduced-motion:reduce)");
+  let dist=0, ticking=false;
+
+  function layout(){
+    const fallback = narrow.matches || calm.matches;
+    outer.classList.toggle("static", fallback);
+    if(fallback){ outer.style.height=""; track.style.transform=""; bar.style.width="0"; return; }
+    dist = Math.max(0, track.scrollWidth - sticky.clientWidth);
+    outer.style.height = (sticky.clientHeight + dist * 1.05) + "px";
+    onScroll();
+  }
+  function onScroll(){
+    if(outer.classList.contains("static")) return;
+    const top = outer.getBoundingClientRect().top - 58;
+    const span = outer.offsetHeight - sticky.clientHeight;
+    const p = Math.min(1, Math.max(0, -top / (span||1)));
+    track.style.transform = `translate3d(${-p*dist}px,0,0)`;
+    bar.style.width = (p*100)+"%";
+  }
+  addEventListener("scroll",()=>{ if(!ticking){ticking=true;requestAnimationFrame(()=>{onScroll();ticking=false});} },{passive:true});
+  addEventListener("resize",layout);
+  addEventListener("load",layout);
+  layout();
+  $("#reelHint").textContent = narrow.matches ? "swipe through the reel" : "keep scrolling — the reel moves with the page";
+})();
+
+/* ==========================================================
+   LIVE LEETCODE DASHBOARD  (stats + badges)
+   Pulls straight from public LeetCode mirrors in the browser,
+   so it re-reads your real profile on every visit.
+   ========================================================== */
+const LC = {
+  statEndpoints: u => ([
+    { url:`https://leetcode-api-faisalshohag.vercel.app/${u}`, parse: d => ({
+        total:d.totalSolved, all:d.totalQuestions,
+        easy:d.easySolved, easyAll:d.totalEasy,
+        med:d.mediumSolved, medAll:d.totalMedium,
+        hard:d.hardSolved, hardAll:d.totalHard,
+        rank:d.ranking, cal:d.submissionCalendar, recent:d.recentSubmissions
+      })},
+    { url:`https://leetcode-stats-api.herokuapp.com/${u}`, parse: d => (d.status==="error"?null:{
+        total:d.totalSolved, all:d.totalQuestions,
+        easy:d.easySolved, easyAll:d.totalEasy,
+        med:d.mediumSolved, medAll:d.totalMedium,
+        hard:d.hardSolved, hardAll:d.totalHard,
+        rank:d.ranking, cal:d.submissionCalendar, recent:null
+      })},
+    { url:`https://alfa-leetcode-api.onrender.com/userProfile/${u}`, parse: d => ({
+        total:d.totalSolved, all:d.totalQuestions,
+        easy:d.easySolved, easyAll:d.totalEasy,
+        med:d.mediumSolved, medAll:d.totalMedium,
+        hard:d.hardSolved, hardAll:d.totalHard,
+        rank:d.ranking, cal:d.submissionCalendar, recent:d.recentSubmissions
+      })}
+  ]),
+
+  badgeEndpoints: u => ([
+    `https://alfa-leetcode-api.onrender.com/${u}/badges`,
+    `https://alfa-leetcode-api.onrender.com/userProfileBadges/${u}`
+  ]),
+
+  async load(u){
+    for(const ep of this.statEndpoints(u)){
+      try{
+        const r = await fetch(ep.url,{headers:{Accept:"application/json"}});
+        if(!r.ok) continue;
+        const n = ep.parse(await r.json());
+        if(n && Number.isFinite(+n.total)) return n;
+      }catch(e){}
+    }
+    return null;
+  },
+
+  async loadBadges(u){
+    for(const url of this.badgeEndpoints(u)){
+      try{
+        const r = await fetch(url,{headers:{Accept:"application/json"}});
+        if(!r.ok) continue;
+        const d = await r.json();
+        const list = d.badges || d.data?.badges;
+        if(Array.isArray(list)) return {
+          count: d.badgesCount ?? list.length,
+          active: d.activeBadge?.displayName || d.activeBadge?.name || "",
+          list: list.map(b=>({
+            name: b.displayName || b.name || "Badge",
+            icon: LC.fixIcon(b.icon || b.medal?.config?.iconGif || ""),
+            date: b.creationDate || b.dateEarned || ""
+          }))
+        };
+      }catch(e){}
+    }
+    return null;
+  },
+
+  // LeetCode returns some icons as site-relative paths
+  fixIcon(src){
+    if(!src) return "";
+    if(src.startsWith("http")) return src;
+    return "https://leetcode.com" + (src.startsWith("/") ? src : "/" + src);
+  }
+};
+
+function ago(ts){
+  const s = Math.floor(Date.now()/1000) - Number(ts);
+  if(s<60) return "just now";
+  const m=s/60, h=m/60, d=h/24;
+  if(m<60) return Math.floor(m)+"m ago";
+  if(h<24) return Math.floor(h)+"h ago";
+  if(d<30) return Math.floor(d)+"d ago";
+  return Math.floor(d/30)+"mo ago";
+}
+
+function shortDate(s){
+  if(!s) return "";
+  const d = new Date(s);
+  if(isNaN(d)) return String(s).slice(0,12);
+  return d.toLocaleDateString(undefined,{month:"short",year:"numeric"});
+}
+
+function heatmap(cal){
+  if(!cal) return "";
+  let map = cal;
+  if(typeof map === "string"){ try{ map = JSON.parse(map); }catch{ return ""; } }
+  const day=86400, today=new Date(); today.setHours(0,0,0,0);
+  const start = Math.floor(today.getTime()/1000) - day*(7*26-1);
+  const counts = {};
+  for(const k in map) counts[Math.floor(Number(k)/day)*day] = Number(map[k]);
+  let cols="";
+  for(let w=0; w<26; w++){
+    let cells="";
+    for(let dd=0; dd<7; dd++){
+      const t = start + day*(w*7+dd);
+      const c = counts[Math.floor(t/day)*day] || 0;
+      const lvl = c===0?0 : c<3?1 : c<6?2 : c<10?3 : 4;
+      cells += `<i data-l="${lvl}" title="${c} submission${c===1?"":"s"} · ${new Date(t*1000).toDateString()}"></i>`;
+    }
+    cols += `<div class="col">${cells}</div>`;
+  }
+  return `<div class="heat" role="img" aria-label="Submission activity over the last 26 weeks">${cols}</div>`;
+}
+
+/* ---- badges shelf ---- */
+function renderBadges(b){
+  if(!CONFIG.showBadges) return "";
+
+  if(!b || !b.list.length){
+    return `<div class="badges">
+      <div class="badges-head"><b>Badges</b><span>${b ? "none earned yet" : "couldn't load right now"}</span></div>
+      <div class="badge-row">
+        ${[1,2,3,4].map(i=>`<div class="badge"><div class="b-ph">?</div>
+          <span class="b-name">badge ${i}</span><span class="b-date">placeholder</span></div>`).join("")}
+      </div>
+      <p class="badges-empty">Badges appear here automatically as you earn them — monthly challenges, study plans, contest streaks.</p>
+    </div>`;
+  }
+
+  return `<div class="badges">
+    <div class="badges-head">
+      <b>Badges</b><span>${b.count} earned</span>
+      ${b.active?`<span class="active">currently displaying: ${esc(b.active)}</span>`:""}
+    </div>
+    <div class="badge-row">
+      ${b.list.map(x=>`
+        <div class="badge ${b.active && x.name===b.active ? "is-active":""}">
+          ${x.icon
+            ? `<img src="${esc(x.icon)}" alt="${esc(x.name)} badge" loading="lazy"
+                    onerror="this.outerHTML='<div class=\\'b-ph\\'>★</div>'">`
+            : `<div class="b-ph">★</div>`}
+          <span class="b-name">${esc(x.name)}</span>
+          <span class="b-date">${esc(shortDate(x.date))}</span>
+        </div>`).join("")}
+    </div>
+    <div style="height:14px"></div>
+  </div>`;
+}
+
+function renderLC(n, badges){
+  const pct = n.all ? n.total/n.all : 0;
+  const R=80, C=2*Math.PI*R;
+  const row=(cls,lbl,got,all)=>`
+    <div class="diff ${cls}">
+      <span class="lbl">${lbl}</span>
+      <span class="rail"><span class="fill" style="width:${all?Math.min(100,got/all*100):0}%"></span></span>
+      <span class="val">${got ?? "–"}<span style="opacity:.55">/${all ?? "–"}</span></span>
+    </div>`;
+
+  const recent = Array.isArray(n.recent) ? n.recent
+    .filter(s=>!s.statusDisplay || s.statusDisplay==="Accepted").slice(0,6) : [];
+
+  return `
+    <div class="lc-body">
+      <div class="ring">
+        <svg viewBox="0 0 186 186" aria-hidden="true">
+          <circle cx="93" cy="93" r="${R}" fill="none" stroke="#E1E6E2" stroke-width="9"/>
+          <circle cx="93" cy="93" r="${R}" fill="none" stroke="var(--accent)" stroke-width="9"
+                  stroke-linecap="round" stroke-dasharray="${C}"
+                  stroke-dashoffset="${C*(1-pct)}" style="transition:stroke-dashoffset 1s ease"/>
+        </svg>
+        <div class="mid">
+          <span class="num">${n.total ?? "–"}</span>
+          <span class="den">solved of ${n.all ?? "–"}</span>
+        </div>
+      </div>
+      <div class="split">
+        ${row("d-easy","Easy",n.easy,n.easyAll)}
+        ${row("d-med","Medium",n.med,n.medAll)}
+        ${row("d-hard","Hard",n.hard,n.hardAll)}
+      </div>
+    </div>
+
+    <div class="stats">
+      <div><div class="k">global rank</div><div class="v">${n.rank?Number(n.rank).toLocaleString():"–"}</div></div>
+      <div><div class="k">badges</div><div class="v">${badges?badges.count:"–"}</div></div>
+      <div><div class="k">completion</div><div class="v">${(pct*100).toFixed(1)}%</div></div>
+    </div>
+
+    ${renderBadges(badges)}
+
+    ${heatmap(n.cal)}
+
+    ${recent.length ? `
+      <div class="recent">
+        <h3>recently accepted</h3>
+        <ol>${recent.map(s=>`
+          <li>
+            <a href="https://leetcode.com/problems/${esc(s.titleSlug)}/" rel="noopener">${esc(s.title)}</a>
+            ${s.lang?`<span class="lang">${esc(s.lang)}</span>`:""}
+            <span class="when">${s.timestamp?ago(s.timestamp):""}</span>
+          </li>`).join("")}
+        </ol>
+      </div>` : ""}
+  `;
+}
+
+(async function bootLC(){
+  const u = (CONFIG.leetcodeUsername||"").trim();
+  const box = $("#lcContent"), sync = $("#lcSync");
+
+  if(!u){
+    $("#lcUser").textContent = "@username not set";
+    sync.textContent = "idle";
+    box.innerHTML = `<div class="lc-msg">Add your handle to <b>CONFIG.leetcodeUsername</b> and this panel fills itself in — solve counts, rank, badges, activity and recent accepted problems, refreshed every time someone opens the page.</div>`
+      + renderBadges(null);
+    return;
+  }
+  $("#lcUser").innerHTML = `<a href="https://leetcode.com/u/${esc(u)}/" rel="noopener" style="text-decoration:none">@${esc(u)}</a>`;
+
+  const key = "lc:"+u, now = Date.now();
+  try{
+    const c = JSON.parse(localStorage.getItem(key)||"null");
+    if(c && now - c.t < CONFIG.cacheMinutes*60000){
+      box.innerHTML = renderLC(c.d, c.b);
+      sync.textContent = "updated "+ago(Math.floor(c.t/1000));
+      return;
+    }
+  }catch{}
+
+  // stats and badges fetched together
+  const [data, badges] = await Promise.all([
+    LC.load(u),
+    CONFIG.showBadges ? LC.loadBadges(u) : Promise.resolve(null)
+  ]);
+
+  if(!data){
+    sync.textContent = "offline";
+    let stale=null; try{ stale = JSON.parse(localStorage.getItem(key)||"null"); }catch{}
+    box.innerHTML = stale
+      ? renderLC(stale.d, stale.b)
+      : `<div class="lc-msg">Couldn't reach LeetCode just now. The page retries on the next visit — check the username in <b>CONFIG.leetcodeUsername</b> if this keeps happening.</div>`;
+    return;
+  }
+  try{ localStorage.setItem(key, JSON.stringify({t:now,d:data,b:badges})); }catch{}
+  box.innerHTML = renderLC(data, badges);
+  sync.textContent = "updated just now";
+})();
+
+/* ---------- nav highlight ---------- */
+(function navspy(){
+  const links=[...document.querySelectorAll("nav a.link")];
+  const secs=links.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting) return;
+      links.forEach(a=>a.setAttribute("aria-current", a.getAttribute("href")==="#"+e.target.id));
+    });
+  },{rootMargin:"-45% 0px -50% 0px"});
+  secs.forEach(s=>io.observe(s));
+})();
+</script>
+</body>
+</html>
